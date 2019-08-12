@@ -79,25 +79,25 @@ class MyLog:
     @staticmethod
     def info(log_msg):
         set_hander('info')
-        logger.debug("[info" + get_current_time() + "]" + log_msg)
+        logger.info("[info" + get_current_time() + "]" + log_msg)
         remove_hander('info')
 
     @staticmethod
     def waring(log_msg):
         set_hander('waring')
-        logger.debug("[waring" + get_current_time() + "]" + log_msg)
+        logger.warning("[waring" + get_current_time() + "]" + log_msg)
         remove_hander('waring')
 
     @staticmethod
     def error(log_msg):
         set_hander('error')
-        logger.debug("[ERROR" + get_current_time() + "]" + log_msg)
+        logger.error("[ERROR" + get_current_time() + "]" + log_msg)
         remove_hander('error')
 
     @staticmethod
     def critical(log_msg):
         set_hander('critical')
-        logger.debug("[CRITICAL" + get_current_time() + "]" + log_msg)
+        logger.error("[CRITICAL" + get_current_time() + "]" + log_msg)
         remove_hander('critical')
 
 
