@@ -3,7 +3,7 @@
 # @Author    : chenyue
 
 from configparser import ConfigParser
-from CaibeikeAPItest.Common  import Log
+from CaibeikeAPItest.Common import Log
 import os
 
 
@@ -52,12 +52,19 @@ class Config:
         self.host_debug = self.get_conf(Config.TITLE_DEBUG, Config.VALUE_HOST)
         self.loginHost_debug = self.get_conf(Config.TITLE_DEBUG, Config.VALUE_LOGIN_HOST)
         self.loginInfo_debug = self.get_conf(Config.TITLE_DEBUG, Config.VALUE_LOGIN_INFO)
-        #08.12/22.18
-        self.tester_debug = self.get_conf(Config.TITLE_DEBUG, Config.VALUE_TESTER)
-        self.tester_debug = self.get_conf(Config.TITLE_DEBUG, Config.VALUE_TESTER)
-        self.tester_debug = self.get_conf(Config.TITLE_DEBUG, Config.VALUE_TESTER)
-        self.tester_debug = self.get_conf(Config.TITLE_DEBUG, Config.VALUE_TESTER)
 
+        self.tester_release = self.get_conf(Config.TITLE_RELEASE, Config.VALUE_TESTER)
+        self.environment_release = self.get_conf(Config.TITLE_RELEASE, Config.VALUE_ENVIRONMENT)
+        self.versionCode_release = self.get_conf(Config.TITLE_RELEASE, Config.VALUE_VERSION_CODE)
+        self.host_release = self.get_conf(Config.TITLE_RELEASE, Config.VALUE_HOST)
+        self.loginHost_release = self.get_conf(Config.TITLE_RELEASE, Config.VALUE_LOGIN_HOST)
+        self.loginInfo_release = self.get_conf(Config.TITLE_RELEASE, Config.VALUE_LOGIN_INFO)
+
+        self.smtpserver = self.get_conf(Config.TITLE_DEBUG, Config.VALUE_TESTER)
+        self.sender = self.get_conf(Config.TITLE_DEBUG, Config.VALUE_TESTER)
+        self.receiver = self.get_conf(Config.TITLE_DEBUG, Config.VALUE_TESTER)
+        self.username = self.get_conf(Config.TITLE_DEBUG, Config.VALUE_TESTER)
+        self.password = self.get_conf(Config.TITLE_DEBUG, Config.VALUE_TESTER)
 
     def get_conf(self, title, value):
         """
@@ -77,15 +84,15 @@ class Config:
         :return:
         """
         self.config.set(title, value, text)
-        with open(self.conf_path,"w+") as f:
+        with open(self.conf_path, "w+") as f:
             return self.config.write(f)
 
-    def add_conf(self,title):
+    def add_conf(self, title):
         """
         添加配置文件
         :param title:
         :return:
         """
         self.config.add_section(title)
-        with open(self.conf_path,"w+") as f:
+        with open(self.conf_path, "w+") as f:
             return self.config.write(f)
