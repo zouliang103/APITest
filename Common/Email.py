@@ -27,7 +27,7 @@ class SendMail:
         mail_body2 = MIMEText(body2, _subtype='plain', _charset='utf-8')
         tm = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time()))
         msg['Subject'] = Header("接口自动化测试报告" + "_" + tm, 'utf-8')
-        msg['From']  = self.config.sender
+        msg['From'] = self.config.sender
         receivers = self.config.receiver
         toclause = receivers.split(',')
         msg['To'] = ",".join(toclause)
