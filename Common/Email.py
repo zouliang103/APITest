@@ -15,7 +15,7 @@ from CaibeikeAPItest.Config import Config
 
 class SendMail:
     def __init__(self):
-        self.config = Config()
+        self.config = Config.Config()
         self.log = Log.MyLog()
 
     def sendMail(self):
@@ -31,10 +31,10 @@ class SendMail:
         receivers = self.config.receiver
         toclause = receivers.split(',')
         msg['To'] = ",".join(toclause)
-
         msg.attach(mail_body2)
+        smtp = smtplib.SMTP()
         try:
-            smtp = smtplib.SMTP()
+            # smtp = smtplib.SMTP()
             smtp.connect(self.config.smtpserver)
             smtp.login(self.config.username, self.config.password)
             smtp.sendmail(self.config.sender, toclause, msg.as_string())
@@ -47,3 +47,4 @@ class SendMail:
             self.log.info("邮件发送成功")
         finally:
             smtp.quit()
+
