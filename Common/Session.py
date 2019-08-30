@@ -7,12 +7,12 @@
 """
 import requests
 from CaibeikeAPItest.Common import Log
-from CaibeikeAPItest.Config import config
+from CaibeikeAPItest.Config import Config
 
 
 class Session:
     def __init__(self):
-        self.config = config.Config()
+        self.config = Config.Config()
         self.log = Log.MyLog()
 
     def get_session(self, env):
