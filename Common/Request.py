@@ -8,22 +8,23 @@
 import os
 import random
 import requests
-from CaibeikeAPItest.Common import Session
-from CaibeikeAPItest.Common import Consts
+from Common import Session
+from Common import Consts
 from requests_toolbelt import MultipartEncoder
 
 
 class Request:
     def __init__(self, env):
         self.session = Session.Session()
-        self.get_session = self.session.get_session(env)
+        self.get_session = self.session.get_token(env)
 
-    def get_request(self, url, data, head):
+    @staticmethod
+    def get_request(url, datas, headers):
         """
         封装GET请求
         :param url:
-        :param data:
-        :param head:
+        :param datas:
+        :param headers:
         :return:
         """
         if not url.startswith('http://'):
@@ -31,9 +32,9 @@ class Request:
             print(url)
         try:
             if data is None:
-                response = requests.get(url=url, headers=head, cookie=self.get_session)
+                response = requests.get(url=url, headers=headers)
             else:
-                response = requests.get(url=url, params=data, headers=head, cookie=self.get_session)
+                response = requests.get(url=url, params=datas, headers=headers)
         except requests.RequestException as e:
             print('%s%s' % ('RequestException url', url))
             print(e)
@@ -51,12 +52,13 @@ class Request:
             print(e)
             response_dicts['body'] = ""
         response_dicts['text'] = response.text
-        response_dicts['time_coumsing'] = time_consuming
+        response_dicts['time_consuming'] = time_consuming
         response_dicts['time_total'] = time_total
 
         return response_dicts
 
-    def post_request(self, url, data, header):
+    @staticmethod
+    def post_request(url, data, header):
         """
         封装POST请求
         :param url:
@@ -69,9 +71,9 @@ class Request:
             print(url)
         try:
             if data is None:
-                response = requests.post(url=url, headers=header, cookie=self.get_session)
+                response = requests.post(url=url, headers=header)
             else:
-                response = requests.post(url=url, data=data, headers=header, cookie=self.get_session)
+                response = requests.post(url=url, data=data, headers=header)
         except requests.RequestException as e:
             print('%s%s' % ('RequestException url', url))
             print(e)
@@ -93,7 +95,7 @@ class Request:
             print(e)
             response_dicts['body'] = ''
         response_dicts['text'] = response.text
-        response_dicts['time_coumsing'] = time_consuming
+        response_dicts['time_consuming'] = time_consuming
         response_dicts['time_total'] = time_total
 
         return response_dicts
@@ -193,6 +195,34 @@ class Request:
         return response_dicts
 
 
+if __name__ == '__main__':
+    a = Request("PRE_DEBUG")
+    URL = 'http://mapi.caibeike.net/index/v4/recommend.html'
+    data = {
+        "groupId": "1573541951000",
+        "start": 0,
+        "limit": 10,
+        "viewType": "recommend",
+        "cityId": "5448b9fa7996edbc1d249fbc"
+    }
+    header = {
+        "Accept-Encoding": "gzip",
+        "User-Agent": "Caibeike/1.0(com.caibeike.android 4.3.3; Mi_Note_3;Android 9; f0a34fad7cf8d390; zh_CN)",
+        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+        "x-app-lat": "31.210729",
+        "x-app-lng": "121.4143",
+        "x-app-nonce": "4151884388",
+        "x-app-platform": "android",
+        "x-app-pushid": "170976fa8ace33aced1",
+        "x-app-session": "1573541951000",
+        "x-app-timestamp": "1573541951000",
+        "x-app-token": a.get_session,
+        "x-app-uuid": "f0a34fad7cf8d390",
+        "x-app-version": "4.3.6"
+    }
+    aa = Request.post_request(url=URL, datas=data, headers=header)
+    print(aa['code'])
+    # print(aa['body']['data']['resultList']['result'][0])
 
 
 

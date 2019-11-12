@@ -1,12 +1,12 @@
 ---
-Basic:
-  dec: "基础信息"
+Login:
+  dec: "登录信息"
   parameters:
     -
-        url:
+        url: /user/login.html
         data:
-              mobile : 15946861458@163.com
-              pw : 15946861458
+              mobile : 15946861120
+              pw : 09ab99eef73bf7c594cd689638b3cfc9
               uesrname : 红贝壳76740
         header: {
           "User-Agent": "Caibeike/1.0(com.caibeike.android 4.3.3; Mi_Note_3;Android 9; f0a34fad7cf8d390; zh_CN)",

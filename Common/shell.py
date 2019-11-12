@@ -11,6 +11,7 @@ import subprocess
 class Shell:
     @staticmethod
     def invoke(cmd):
+        # 创建一个子进程
         output, errs = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         o = output.decode("utf-8")
         return o

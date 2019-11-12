@@ -3,7 +3,7 @@
 # @Author    : chenyue
 
 from configparser import ConfigParser
-from CaibeikeAPItest.Common import Log
+from Common import Log
 import os
 
 
@@ -12,7 +12,7 @@ class Config:
     TITLE_DEBUG = "PRE_DEBUG"
     TITLE_RELEASE = "MAPI_DEBUG"
     TITLE_MAIL = "mail"
-
+    TITLE_Mongodb = "Mongodb"
     # values:
     # [PRE\MAPI]
     VALUE_TESTER = 'tester'
@@ -31,6 +31,15 @@ class Config:
 
     # path
     path_dir = str(os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir)))
+    # MongoDb config
+    VALUE_MD_HOST = "host"
+    VALUE_MD_PORT = "port"
+    VALUE_MD_USERNAME = "username"
+    VALUE_MD_PASSWORD = "password"
+    VALUE_MD_DATABASE = "database"
+    VALUE_MD_SSHADD = "sshAddress"
+    VALUE_MD_SSHUSERNAME = "sshUserName"
+    VALUE_MD_SSHPWD = "sshUserPwd"
 
     def __init__(self):
         """
@@ -60,11 +69,20 @@ class Config:
         self.loginHost_release = self.get_conf(Config.TITLE_RELEASE, Config.VALUE_LOGIN_HOST)
         self.loginInfo_release = self.get_conf(Config.TITLE_RELEASE, Config.VALUE_LOGIN_INFO)
 
-        self.smtpserver = self.get_conf(Config.TITLE_DEBUG, Config.VALUE_TESTER)
-        self.sender = self.get_conf(Config.TITLE_DEBUG, Config.VALUE_TESTER)
-        self.receiver = self.get_conf(Config.TITLE_DEBUG, Config.VALUE_TESTER)
-        self.username = self.get_conf(Config.TITLE_DEBUG, Config.VALUE_TESTER)
-        self.password = self.get_conf(Config.TITLE_DEBUG, Config.VALUE_TESTER)
+        self.smtpserver = self.get_conf(Config.TITLE_MAIL, Config.VALUE_SMTP_SERVER)
+        self.sender = self.get_conf(Config.TITLE_MAIL, Config.VALUE_SENDER)
+        self.receiver = self.get_conf(Config.TITLE_MAIL, Config.VALUE_RECEIVER)
+        self.username = self.get_conf(Config.TITLE_MAIL, Config.VALUE_USERNAME)
+        self.password = self.get_conf(Config.TITLE_MAIL, Config.VALUE_PASSWORD)
+
+        self.md_host = self.get_conf(Config.TITLE_Mongodb ,Config.VALUE_MD_HOST)
+        self.md_port = self.get_conf(Config.TITLE_Mongodb, Config.VALUE_MD_PORT)
+        self.md_username = self.get_conf(Config.TITLE_Mongodb, Config.VALUE_MD_USERNAME)
+        self.md_password = self.get_conf(Config.TITLE_Mongodb, Config.VALUE_MD_PASSWORD)
+        self.md_database = self.get_conf(Config.TITLE_Mongodb, Config.VALUE_MD_DATABASE)
+        self.md_ssh_add = self.get_conf(Config.TITLE_Mongodb,Config.VALUE_MD_SSHADD)
+        self.md_ssh_username = self.get_conf(Config.TITLE_Mongodb,Config.VALUE_MD_SSHUSERNAME)
+        self.md_ssh_pwd = self.get_conf(Config.TITLE_Mongodb,Config.VALUE_MD_SSHPWD)
 
     def get_conf(self, title, value):
         """
@@ -96,3 +114,9 @@ class Config:
         self.config.add_section(title)
         with open(self.conf_path, "w+") as f:
             return self.config.write(f)
+
+
+if __name__ == "__main__":
+    cg = Config()
+    print(cg.md_host,cg.md_port,cg.md_username,cg.md_password,cg.md_database,
+          cg.md_ssh_add,cg.md_ssh_username,cg.md_ssh_pwd)

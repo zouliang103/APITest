@@ -3,31 +3,28 @@
 # @Author    : chenyue
 
 """"
-运行测试集
-# '--allure_severities=critical, blocker'
-# '--allure_stories=测试模块_demo1, 测试模块_demo2'
-# '--allure_features=测试features'
+
 """
 import sys
+import os
 import pytest
-from CaibeikeAPItest.Common import Log,shell,Email
-from CaibeikeAPItest.Config import Config
-
+from Common import Log, shell, Email
+from Config import Config
+from Params import params
 if __name__ == '__main__':
+    # a = os.getcwd()
+    now_file_name = os.path.abspath(os.path.dirname(__file__))
+    testcase_file_name = now_file_name + '\TestCase'
+    os.chdir(testcase_file_name)
     conf = Config.Config()
     log = Log.MyLog()
     log.info('初始化配置文件,path=' + conf.conf_path)
-
     shell = shell.Shell()
-    xml_report_path = conf.xml_report_path
-    html_report_path = conf.html_report_path
-
+    report_name = params.GetParam.new_report_name()
     # 定义测试集
-    args = ['-s', '-q', '--allure', xml_report_path]
-    pytest.main(args)
-    cmd = 'allure generate %s -o %s' % (xml_report_path, html_report_path)
-
+    cmd = 'pytest --html=../Reports/%s.html --self-contained-html' % report_name
     try:
+        shell.invoke("cd TestCase")
         shell.invoke(cmd)
     except Exception as e:
         log.error('执行用例失败，请检查环境配置')
@@ -35,7 +32,7 @@ if __name__ == '__main__':
 
     try:
         mail = Email.SendMail()
-        mail.sendMail()
+        mail.send_mail()
     except Exception as e:
         log.error('发送邮件失败，请检查邮件配置')
         raise

@@ -1,33 +1,29 @@
-# -*- coding: utf-8 -*-
-# @Time   :2019/08/30
-# @Author    : chenyue
-
-"""
-# @allure.feature # 用于定义被测试的功能，被测产品的需求点
-# @allure.story # 用于定义被测功能的用户场景，即子功能点
-# @allure.severity #用于定义用例优先级
-# @allure.issue #用于定义问题表识，关联标识已有的问题，可为一个url链接地址
-# @allure.testcase #用于用例标识，关联标识用例，可为一个url链接地址
-# @allure.attach # 用于向测试报告中输入一些附加的信息，通常是一些测试数据信息
-# @pytest.allure.step # 用于将一些通用的函数作为测试步骤输出到报告，调用此函数的地方会向报告中输出步骤
-# allure.environment(environment=env) #用于定义environment
-"""
-
-import allure
 import pytest
-from CaibeikeAPItest.Config import Config
-from CaibeikeAPItest.Common import Consts
+from Common import Session
+from Params import params
+from Common import headers
 
 
-@pytest.fixture()
-def action():
-    # 定义环境
-    env = Consts.API_ENVIRONMENT_RELEASE
-    # 定义报告中的environment
-    conf = Config.Config()
-    host = conf.host_release
-    tester = conf.tester_release
-    allure.environment(environment=env)
-    allure.environment(hostname=host)
-    allure.environment(tester=tester)
-    return env
+@pytest.fixture(scope='class')
+def get_request_header():
+    retry = 3    # 重试次数
+    num_of_try = 0  # 重试了多少次
+    header_api = headers.Headers()
+    session = Session.Session()
+    while num_of_try < retry:
+        token = session.get_token("PRE_DEBUG")
+        if token is None or token == '':
+            num_of_try += 1
+        else:
+            break
+    token = session.get_token("PRE_DEBUG")
+    header = params.GetParam.get_header("Basic")[0]
+    header['Accept-Encoding'] = header_api.get_accept_encoding("Accept-Encoding")
+    header['x-app-nonce'] = header_api.get_app_nonce()
+    header['x-app-session'] = header_api.get_timestamp(0)
+    header['x-app-timestamp'] = header_api.get_timestamp(1)
+    header['x-app-version'] = header_api.get_app_version("PRE_DEBUG")
+    header['token'] = token
+    return header
+
+

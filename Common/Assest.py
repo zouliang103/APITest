@@ -6,18 +6,19 @@
 封装Assert方法
 """
 import json
-from CaibeikeAPItest.Common import Consts
-from CaibeikeAPItest.Common import Log
+from Common import Consts
+from Common import Log
+
 
 class Assertions:
     def __init__(self):
         self.log = Log.MyLog()
 
-    def assert_code(self, code ,expected_code):
+    def assert_code(self, code, expected_code):
         """
         验证返回值的状态码
-        :param code:
-        :param expected_code:
+        :param code: 返回的验证码
+        :param expected_code:预期验证码
         :return:
         """
         try:
@@ -33,9 +34,9 @@ class Assertions:
     def assert_body(self, body, body_msg, expected_msg):
         """
         验证返回参数中任意或所有属性的值
-        :param body:
-        :param body_msg:
-        :param expected_msg:
+        :param body: 返回值
+        :param body_msg:返回值的某个字段
+        :param expected_msg:返回体中的某个字段的预期值
         :return:
         """
         try:
@@ -49,6 +50,44 @@ class Assertions:
 
             raise
 
+    def assert_msg_not_null(self,body,body_msg):
+        """
+        :param body: 返回体
+        :param body_msg:返回体的某个字段
+        :return:
+        """
+        try:
+            msg = body[body_msg]
+            assert msg != None or msg != ''
+            return True
+
+        except:
+            self.log.error("Response body msg is None,The None body body_msg is:%s" % body_msg)
+            Consts.RESULT_LIST.append('fail')
+
+            raise
+
+
+
+    def assert_in_text(self, body, expected_msg):
+        """
+        验证response body中是否包含预期字符串
+        :param body:
+        :param expected_msg:
+        :return:
+        """
+        try:
+            text = json.dumps(body, ensure_ascii=False)
+            # print(text)
+            assert expected_msg in text
+            return True
+
+        except:
+            self.log.error("Response body Does not contain expected_msg, expected_msg is %s" % expected_msg)
+            Consts.RESULT_LIST.append('fail')
+
+            raise
+
     def assert_text(self, body ,expected_msg):
         """
         验证返回参数中是否包含预期字符
@@ -57,12 +96,11 @@ class Assertions:
         :return:
         """
         try:
-            text = json.dumps(body,ensure_ascii=False)
-            assert expected_msg in text
+            assert body == expected_msg
             return True
 
         except:
-            self.log.error("Response body != expected_msg,expected_msg is :%s,body is :%s" % (expected_msg, body))
+            self.log.error("Response body != expected_msg, expected_msg is %s, body is %s" % (expected_msg, body))
             Consts.RESULT_LIST.append('fail')
 
             raise

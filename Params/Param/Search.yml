@@ -1,13 +1,15 @@
 ---
-Basic:
-  dec: "基础信息"
+Search:
+  dec: "首页搜索接口"
   parameters:
     -
-        url:
+        url: /index/v4/recommend.html
         data:
-              mobile : 15946861458@163.com
-              pw : 15946861458
-              uesrname : 红贝壳76740
+              groupId : 1573475816669
+              start : 0
+              limit : 10
+              viewType : recommend
+              cityId : 5448b9fa7996edbc1d249fbc
         header: {
           "User-Agent": "Caibeike/1.0(com.caibeike.android 4.3.3; Mi_Note_3;Android 9; f0a34fad7cf8d390; zh_CN)",
           "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
